@@ -11,3 +11,9 @@
 *.lai
 *.la
 *.a
+
+# Random Visual Studio files
+*.user
+*.opensdf
+*.sdf
+*.suo
