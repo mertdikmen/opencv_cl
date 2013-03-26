@@ -30,18 +30,18 @@ int main(int argc, char* argv[])
 
 	std::cout << "Number of frames: " << n_frames << std::endl;
 
-	int start_frame = 0;
-	if (argc > 2)
-	{
-		start_frame = atoi(argv[2]);
-		cap.set(CV_CAP_PROP_POS_FRAMES, start_frame);
-	}
+	//int start_frame = 0;
+	//if (argc > 2)
+	//{
+	//	start_frame = atoi(argv[2]);
+	//	cap.set(CV_CAP_PROP_POS_FRAMES, start_frame);
+	//}
 
-	int n_process = 100;
-	if (argc > 3)
-	{
-		n_process = atoi(argv[3]);
-	}
+	//int n_process = 100;
+	//if (argc > 3)
+	//{
+	//	n_process = atoi(argv[3]);
+	//}
 
 	cv::ocl::OclCascadeClassifier cascade;
 
@@ -52,13 +52,13 @@ int main(int argc, char* argv[])
 
 	std::vector<cv::Rect> detections;
 
-	for (int i = 0; i < n_process; i++)
-	{
-		cap >> f;
+	cap >> f;
 
+	do
+	{
 		cv::cvtColor(f, f_gray, CV_BGR2GRAY);
 
-		cascade.detectMultiScale(f_gray, detections, 1.1, 3, 0, cv::Size(75, 75));
+		cascade.detectMultiScale(f_gray, detections, 1.1, 3, 0, cv::Size(150, 150));
 
 		if (detections.size() > 0)
 		{
@@ -80,7 +80,9 @@ int main(int argc, char* argv[])
 		}
 		cv::imshow("video", f);
 		cv::waitKey(10);
-	}
+
+		cap >> f;
+	}while(!f.empty());
 
 	return 0;
 }
