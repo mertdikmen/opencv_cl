@@ -6,21 +6,27 @@ int main(int argc, char* argv[])
 {
 	//set up opencl contexts
 	std::vector<cv::ocl::Info> ocl_devices;
-	cv::ocl::getDevice(ocl_devices);
-
+	cv::ocl::getDevice(ocl_devices, cv::ocl::CVCL_DEVICE_TYPE_CPU);
 	for (std::vector<cv::ocl::Info>::iterator it = ocl_devices.begin();
 		it != ocl_devices.end();
 		it++)
 	{
-		std::cout << it->DeviceName[0] << std::endl;
+		for (int i = 0; i < (*it).DeviceName.size(); i++)
+		{
+			std::cout << (*it).DeviceName[i] << std::endl;
+		}
+
+		break;
 	}
 
+	//setting the device 1
+	cv::ocl::setDevice(ocl_devices[0], 0);
+	
 	if (argc < 2)
 	{
 		std::cout << "Specify a video file." << std::endl;
 		return 1;
 	}
-
 
 	std::cout << "Reading video file: " << argv[1] << std::endl;
 
@@ -29,19 +35,6 @@ int main(int argc, char* argv[])
 	double n_frames = cap.get(CV_CAP_PROP_FRAME_COUNT);
 
 	std::cout << "Number of frames: " << n_frames << std::endl;
-
-	//int start_frame = 0;
-	//if (argc > 2)
-	//{
-	//	start_frame = atoi(argv[2]);
-	//	cap.set(CV_CAP_PROP_POS_FRAMES, start_frame);
-	//}
-
-	//int n_process = 100;
-	//if (argc > 3)
-	//{
-	//	n_process = atoi(argv[3]);
-	//}
 
 	cv::ocl::OclCascadeClassifier cascade;
 
