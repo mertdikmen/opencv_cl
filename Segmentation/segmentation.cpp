@@ -5,14 +5,21 @@ int main(int argc, char* argv[])
 {
 	//set up opencl contexts
 	std::vector<cv::ocl::Info> ocl_devices;
-	cv::ocl::getDevice(ocl_devices);
-
+	cv::ocl::getDevice(ocl_devices, cv::ocl::CVCL_DEVICE_TYPE_GPU);
 	for (std::vector<cv::ocl::Info>::iterator it = ocl_devices.begin();
 		it != ocl_devices.end();
 		it++)
 	{
-		std::cout << it->DeviceName[0] << std::endl;
+		for (int i = 0; i < (*it).DeviceName.size(); i++)
+		{
+			std::cout << (*it).DeviceName[i] << std::endl;
+		}
+
+		break;
 	}
+
+	//setting the device 1
+	cv::ocl::setDevice(ocl_devices[0], 0);
 
 	if (argc < 2)
 	{
